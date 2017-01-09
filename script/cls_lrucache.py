@@ -1,5 +1,6 @@
 from cls_lrunode import *
 from cls_doublelinkedlist import *
+from cls_debuglog import *
 
 class LRUCache(DoubleLinkedList):
     def __init__(self, capacity):
@@ -7,14 +8,15 @@ class LRUCache(DoubleLinkedList):
         self.keys = dict()
         self.capacity = capacity
         self.count = 0
-        self.debugenabled = None
+        self.dbg = debuglog()
+        self.dbg.enabled = None
+        self.dbg.writelog('Initialized LRUCache')
 
     def debugstr(self, msg):
-        if self.debugenabled:
-            print('DBG:', msg)
+        self.dbg.writelog(msg)
 
     def dumpdlist(self):
-        if not self.debugenabled:
+        if not self.dbg.enabled:
             return None
 
         self.debugstr('dumping list')
@@ -88,7 +90,6 @@ class LRUCache(DoubleLinkedList):
             self.movetoend(node)
             node.data = value
 
-
 """
 obj = LRUCache(2)
 for x in range(0,15):
@@ -100,5 +101,4 @@ for x in range(0,15):
     obj.put(x,x)
     obj.dumpdlist()
     print(obj.get(x))
-
 """
